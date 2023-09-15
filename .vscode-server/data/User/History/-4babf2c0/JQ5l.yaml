@@ -1,0 +1,35 @@
+proxy:
+  secretToken: "c6d26111ba8fa7be258ae8f662094f0f2b838a2657d04ee6e9b0195a1fb5014d"
+
+singleuser:
+  serviceAccountName: spark
+  storage:
+    type: "static"
+    static:
+      pvcName: "jupyterhub-pvc"
+      subPath: 'jupyter-{username}-{servername}'  
+  image:
+    name: jupyter/pyspark-notebook
+    tag: latest
+  extraVolumes:
+    - name: sparkmagic-config-volume
+      configMap:
+        name: sparkmagic-config
+  extraVolumeMounts:
+    - name: sparkmagic-config-volume
+      mountPath: /home/jovyan/.sparkmagic/
+                                                                                                                                                                                                                                    
+hub:
+  db:
+    pvc:
+      storageClassName: rook-ceph-block
+
+  extraConfig:
+    00-first-config: |
+         c.KubeSpawner.service_account = 'spark'
+
+proxy:
+  service:
+    type: NodePort
+    nodePorts:
+      http: 30080                                                                                                                                                                                                                                 

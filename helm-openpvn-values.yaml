@@ -1,0 +1,11 @@
+
+service:
+  port: 143
+  targetPort: 143
+
+persistence:
+  enabled: true
+  storageClass: "rook-ceph-block"  # Asegúrate de que esta es la clase de almacenamiento correcta.
+  accessMode: ReadWriteOnce
+  size: 1Gi  # Ajusta esto según las necesidades.
+  existingClaim: "openvpn-pvc"  # Esto es importante; le dices a Helm que use el PVC existente.

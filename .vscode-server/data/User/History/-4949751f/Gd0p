@@ -1,0 +1,18 @@
+# Usar la imagen oficial de Spark con Python
+FROM apache/spark-py:latest
+
+# Instalar herramientas y bibliotecas esenciales de Python
+RUN apt-get update && \
+    apt-get install -y python3-pip && \
+    pip3 install numpy pandas scipy scikit-learn matplotlib seaborn
+
+# Descargar e instalar el conector mongo-spark-connector
+ARG MONGO_CONNECTOR_VERSION=3.0.1
+ADD https://repo1.maven.org/maven2/org/mongodb/spark/mongo-spark-connector_2.12/${MONGO_CONNECTOR_VERSION}/mongo-spark-connector_2.12-${MONGO_CONNECTOR_VERSION}.jar /usr/local/spark/jars/
+
+# Configurar el conector para que sea detectado por PySpark al iniciarse
+ENV PYSPARK_SUBMIT_ARGS="--jars /usr/local/spark/jars/mongo-spark-connector_2.12-${MONGO_CONNECTOR_VERSION}.jar pyspark-shell"
+
+# Otros comandos adicionales para configuración, si es necesario
+
+CMD ["/bin/bash"]

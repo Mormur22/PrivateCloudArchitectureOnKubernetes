@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k8s-dashboard
+  namespace: kubernetes-dashboard
+  labels:
+    kcert.dev/ingress: "managed"
+  annotations:
+      kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - host: "cluster.tfg.es"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: kubernetes-dashboard
+            port:
+              number: 443

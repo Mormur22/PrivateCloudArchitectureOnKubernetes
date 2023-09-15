@@ -1,0 +1,6 @@
+cluster-base
+jupyter-sparkmagic
+livy
+spark-cluster
+spark-monitoring
+azure-keyvault-secret-reloader

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: spark-history-server
+  namespace: spark-jobs
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: spark-history-server
+    spec:
+      containers:
+        - name: spark-history-server
+          image: docker.io/ingkle/spark-history-server
+          env:
+            - name: SPARK_HISTORY_OPTS
+              value: "-Dspark.history.fs.logDirectory=/mnt/events"
+          ports:
+            - containerPort: 18080
+          volumeMounts:
+            - name: spark-eventlog-volume
+              mountPath: "/mnt/events"
+      volumes:
+        - name: spark-eventlog-volume
+          persistentVolumeClaim:
+            claimName: pvc-spark-data

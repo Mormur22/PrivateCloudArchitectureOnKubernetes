@@ -1,0 +1,7 @@
+{
+    "window.autoDetectColorScheme": true,
+    "workbench.colorTheme": "Ayu Mirage Bordered",
+    "remote.SSH.remotePlatform": {
+        "147.96.81.119": "linux"
+    }
+}

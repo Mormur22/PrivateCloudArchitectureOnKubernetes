@@ -1,0 +1,33 @@
+# Usar la imagen base de Jupyter Notebook
+FROM jupyter/base-notebook:latest
+
+# Instalar OpenJDK 11
+USER root
+RUN apt-get update -y && \
+    apt-get install -y openjdk-11-jdk && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Configurar JAVA_HOME
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+# Cambiar de nuevo al usuario jovyan (por defecto en las imágenes de Jupyter)
+USER jovyan
+
+# Instalar PySpark (última versión)
+RUN pip install pyspark
+
+# Instalar la biblioteca pymongo (última versión)
+RUN pip install pymongo
+
+# Descargar e instalar el conector mongo-spark-connector específico
+# (Aquí la situación es un poco diferente, ya que debes conocer la URL exacta de la última versión.
+# Una opción es establecer una versión específica o usar una herramienta o script para determinar la URL de la última versión automáticamente.)
+ADD https://repo1.maven.org/maven2/org/mongodb/spark/mongo-spark-connector_2.13/[VERSION_ULTIMA]/mongo-spark-connector_2.13-[VERSION_ULTIMA]-all.jar /usr/local/spark/jars/
+
+# Configurar el conector para que sea detectado por PySpark al iniciarse
+# (Nuevamente, debes asegurarte de especificar la versión correcta aquí.)
+ENV PYSPARK_SUBMIT_ARGS="--jars /usr/local/spark/jars/mongo-spark-connector_2.13-[VERSION_ULTIMA]-all.jar pyspark-shell"
+
+# Otras configuraciones y dependencias que quieras agregar

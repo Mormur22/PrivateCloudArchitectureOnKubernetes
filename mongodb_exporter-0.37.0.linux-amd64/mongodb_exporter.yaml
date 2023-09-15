@@ -1,0 +1,2 @@
+mongodb:
+  uri: "mongodb://147.96.81.119:30159/admin"

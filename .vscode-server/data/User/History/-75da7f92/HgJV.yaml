@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: spark-shuffle-pvc
+  namespace: spark-namespace
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: rook-ceph-block
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-shuffle
+  namespace: spark-namespace
+spec:
+  replicas: 2  # Ajusta según la alta disponibilidad que requieras
+  selector:
+    matchLabels:
+      app: spark-shuffle
+  template:
+    metadata:
+      labels:
+        app: spark-shuffle
+    spec:
+      containers:
+      - name: spark-shuffle
+        image: [YOUR_SPARK_IMAGE]  # Por ejemplo: "gcr.io/spark-operator/spark:3.1.1"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 7337
+        volumeMounts:
+        - name: shuffle-data
+          mountPath: /path/where/spark/writes/shuffle/data
+      volumes:
+      - name: shuffle-data
+        persistentVolumeClaim:
+          claimName: spark-shuffle-pvc

@@ -1,0 +1,22 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webapp-ingress
+  labels:
+  kcert.dev/ingress: "managed"
+  annotations:
+      kubernetes.io/ingress.class: "nginx"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: cluster.ucm.es
+    http:
+      paths:
+        - path: /webserver
+          pathType: Prefix
+          backend:
+            service:
+              name: web-server-service
+              port:
+                number: 80

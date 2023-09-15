@@ -1,0 +1,36 @@
+FROM jupyter/base-notebook:latest
+
+# Cambiar al usuario root para instalación de paquetes
+USER root
+
+# Agregar esto antes de intentar instalar sparkmagic
+RUN apt-get update && \
+    apt-get install -y gcc g++ python3-dev libkrb5-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+USER jovyan
+# Instalar sparkmagic
+RUN pip install sparkmagic
+
+# Instalar PySpark y el conector MongoDB para Spark
+RUN pip install pyspark
+
+USER root
+RUN mkdir -p /opt/spark/jars && \
+    wget -P /opt/spark/jars https://repo1.maven.org/maven2/org/mongodb/spark/mongo-spark-connector_2.12/3.0.1/mongo-spark-connector_2.12-3.0.1.jar
+
+# Configurar variables de entorno para PySpark
+ENV SPARK_HOME=/opt/spark
+ENV PATH=$SPARK_HOME/bin:$PATH
+ENV PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.9-src.zip:$PYTHONPATH
+ENV PYSPARK_PYTHON=/opt/conda/bin/python
+
+# Instalar los kernels de sparkmagic
+RUN jupyter-kernelspec install /opt/conda/lib/python3.1/site-packages/sparkmagic/kernels/sparkkernel
+RUN jupyter-kernelspec install /opt/conda/lib/python3.1/site-packages/sparkmagic/kernels/sparkrkernel
+RUN jupyter-kernelspec install /opt/conda/lib/python3.1/site-packages/sparkmagic/kernels/pysparkkernel
+
+USER jovyan
+# Instalar bibliotecas esenciales para análisis de datos
+RUN pip install numpy pandas matplotlib seaborn scipy scikit-learn statsmodels

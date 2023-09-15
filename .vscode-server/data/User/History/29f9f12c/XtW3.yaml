@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb-shard2
+  namespace: mongo-sharded
+spec:
+  serviceName: "mongodb-shard2"
+  replicas: 3
+  selector:
+    matchLabels:
+      role: mongodb-shard2
+  template:
+    metadata:
+      labels:
+        role: mongodb-shard2
+    spec:
+      containers:
+      - name: mongodb-shard2
+        image: mongo:4.4
+        command:
+          - mongod
+          - "--shardsvr"
+          - "--replSet"
+          - shard2ReplSet
+          - "--bind_ip"
+          - "0.0.0.0"
+        ports:
+        - containerPort: 27018
+        volumeMounts:
+          - name: mongodb-shard2-data
+            mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-shard2-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "rook-ceph-block"
+      resources:
+        requests:
+          storage: 10Gi

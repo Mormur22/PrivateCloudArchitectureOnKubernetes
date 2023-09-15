@@ -1,0 +1,20 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webapp-ingress
+  labels:
+    kcert.dev/ingress: "managed"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: cluster.tfg.es
+    http:
+      paths:
+        - path: /webserver
+          pathType: Prefix
+          backend:
+            service:
+              name: web-server-service
+              port:
+                number: 80

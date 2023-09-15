@@ -1,0 +1,44 @@
+//para el config server
+kubectl exec -it -n mongo-sharded mongodb-configserver-0 -- mongo --port 27019
+rs.initiate({
+  _id: "configReplSet",
+  configsvr: true,
+  members: [
+    { _id: 0, host: "mongodb-configserver-0.mongodb-configserver:27019" },
+    { _id: 1, host: "mongodb-configserver-1.mongodb-configserver:27019" },
+    { _id: 2, host: "mongodb-configserver-2.mongodb-configserver:27019" }
+  ]
+});
+
+//para cada shard
+kubectl exec -it -n mongo-sharded mongodb-shard0-0 -- mongo --port 2018
+rs.initiate({
+   _id: "mongodb-shard0",
+   members: [
+     { _id: 0, host: "mongodb-shard0-0.mongodb-shard0:27018" },
+     { _id: 1, host: "mongodb-shard0-1.mongodb-shard0:27018" },
+     { _id: 2, host: "mongodb-shard0-2.mongodb-shard0:27018" }
+   ]
+});
+
+rs.stepDown(0);
+
+//mongos
+kubectl exec -it -n mongo-sharded mongodb-mongos-77cb5d8765-fsmgt -- mongo
+sh.addShard("shard1ReplSet/mongodb-shard1-0.mongodb-shard0:27018,mongodb-shard1-1.mongodb-shard0:27018,mongodb-shard1-2.mongodb-shard1:27018");
+sh.addShard("shard2ReplSet/mongodb-shard2-0.mongodb-shard0:27018,mongodb-shard2-1.mongodb-shard0:27018,mongodb-shard2-2.mongodb-shard2:27018");
+sh.addShard("shard3ReplSet/mongodb-shard3-0.mongodb-shard0:27018,mongodb-shard3-1.mongodb-shard0:27018,mongodb-shard3-2.mongodb-shard3:27018");
+
+ssh -L 30159:localhost:30159 estudiante@147.96.81.119
+kubectl port-forward svc/mongodb-mongos 30159:30159
+
+db.createUser({user: "test",pwd: "testing",roles: [{ role: "clusterMonitor", db: "admin" },{ role: "read", db: "mydb" }]})
+
+
+//comando spark
+ssh -L 32253:localhost:32253 estudiante@147.96.81.119
+kubectl port-forward svc/mongodb-mongos 32253:32253
+
+//comando argo
+ssh -L 31658:localhost:31658 estudiante@147.96.81.119
+kubectl port-forward svc/mongodb-mongos 31658:31658

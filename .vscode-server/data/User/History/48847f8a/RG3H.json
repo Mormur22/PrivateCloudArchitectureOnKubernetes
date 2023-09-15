@@ -1,0 +1,10 @@
+{
+    "window.autoDetectColorScheme": true,
+    "workbench.colorTheme": "Ayu Light",
+    "remote.SSH.remotePlatform": {
+        "147.96.81.119": "linux"
+    },
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "git.enableSmartCommit": true
+}

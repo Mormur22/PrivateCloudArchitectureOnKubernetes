@@ -1,0 +1,12 @@
+contexts:
+- name: localhost:31658
+  server: localhost:31658
+  user: localhost:31658
+current-context: localhost:31658
+servers:
+- grpc-web-root-path: ""
+  insecure: true
+  server: localhost:31658
+users:
+- auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcmdvY2QiLCJzdWIiOiJhZG1pbjpsb2dpbiIsImV4cCI6MTY5Mjg5NjUwMCwibmJmIjoxNjkyODEwMTAwLCJpYXQiOjE2OTI4MTAxMDAsImp0aSI6ImVkMmM2ZjU4LTI3YTYtNDk0Yy1hNjI4LTM3Mzk3ZTk4MDdjYSJ9.flHf6qAdoq2_aWrq8ITkf7PJXVg4KvIrT5vVBWTp9_Q
+  name: localhost:31658

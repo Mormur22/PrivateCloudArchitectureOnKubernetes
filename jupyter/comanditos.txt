@@ -1,0 +1,17 @@
+kubectl run spark-test-pod -it --rm=true \
+  --image=docker.io/estudianteucm22/spark:spark-autorized \
+  --namespace=spark-operator \
+  --serviceaccount=my-release-spark-operator \
+  --command -- /bin/bash
+
+
+
+./bin/spark-submit \
+  --master k8s://https://147.96.81.119:6443 \
+  --deploy-mode cluster \
+  --name spark-pi \
+  --class org.apache.spark.examples.SparkPi \
+  --conf spark.executor.instances=2 \
+  --conf spark.kubernetes.namespace=spark-operator \
+  --conf spark.kubernetes.container.image=docker.io/estudianteucm22/spark:spark-autorized \
+  local:/path/to/spark/examples/jars/spark-examples_2.12-3.4.1.jar

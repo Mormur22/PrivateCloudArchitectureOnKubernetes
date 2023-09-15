@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb-shard0
+spec:
+  serviceName: "mongodb-shard0"
+  replicas: 3
+  selector:
+    matchLabels:
+      role: mongodb-shard0
+  template:
+    metadata:
+      labels:
+        role: mongodb-shard0
+    spec:
+      containers:
+      - name: mongodb-shard0
+        image: mongo:4.4
+        command:
+          - mongod
+          - "--shardsvr"
+          - "--replSet"
+          - shard0ReplSet
+          - "--bind_ip"
+          - "0.0.0.0"
+        ports:
+        - containerPort: 27018
+        volumeMounts:
+          - name: mongodb-shard0-data
+            mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-shard0-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "rook-ceph-block"
+      resources:
+        requests:
+          storage: 10Gi

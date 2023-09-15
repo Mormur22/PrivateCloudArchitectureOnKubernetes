@@ -1,0 +1,32 @@
+proxy:
+  secretToken: "c6d26111ba8fa7be258ae8f662094f0f2b838a2657d04ee6e9b0195a1fb5014d"
+
+singleuser:
+  storage:
+    type: "static"
+    static:
+      pvcName: "jupyterhub-pvc"
+      subPath: 'jupyter-{username}-{servername}'
+  image:
+    name: jupyter/pyspark-notebook
+    tag: latest
+  extraVolumes:
+    - name: k8s-server-cert
+      secret:
+        secretName: k8s-server-cert
+  extraVolumeMounts:
+    - name: k8s-server-cert
+      mountPath: /etc/certs/k8s-server-cert.pem
+      subPath: k8s-server-cert.pem
+      readOnly: true
+                                                                                                                                                                                                                                    
+hub:
+  db:
+    pvc:
+      storageClassName: rook-ceph-block 
+
+proxy:
+  service:
+    type: NodePort
+    nodePorts:
+      http: 30080                                                                                                                                                                                                                                 

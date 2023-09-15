@@ -1,0 +1,1 @@
+argocd app create spark-app --repo git@github.com:Mormur22/ArgoScripts.git --path spark-jobs --project spark --dest-server https://kubernetes.default.svc --dest-namespace spark-jobs --revision argocd --sync-policy auto

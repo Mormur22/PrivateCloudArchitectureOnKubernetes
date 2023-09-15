@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jupyter-estudiante-service
+  namespace: spark-jobs
+spec:
+  selector:
+    app: jupyterhub
+    hub.jupyter.org/username: estudiante
+  ports:
+    - name: sparkmaster
+      protocol: TCP
+      port: 8889
+      targetPort: 8889
+
+    - name: https
+      protocol: TCP
+      port: 8888
+      targetPort: 8888
+
+    - name: sparkpartition
+      protocol: 
+      port: 29414
+      targetPort: 29414
+  type: ClusterIP

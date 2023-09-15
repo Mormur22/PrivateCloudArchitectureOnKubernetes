@@ -1,0 +1,19 @@
+{
+    "kernel_python_credentials": {
+        "url": "http://<LIVY_SERVER>:<LIVY_PORT>"
+    },
+    "session_configs": {
+        "executorCores": 2,
+        "executorMemory": "1g",
+        "driverMemory": "1g",
+        "conf": {
+            "spark.kubernetes.container.image": "gcr.io/spark-operator/spark:v3.0.0-gcs-prometheus",
+            "spark.kubernetes.namespace": "spark-jobs",
+            "spark.kubernetes.driver.serviceAccountName": "spark",
+            "spark.kubernetes.authenticate.caCertFile": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
+            "spark.kubernetes.authenticate.oauthTokenFile": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+            "spark.kubernetes.executor.serviceAccountName": "spark"
+        }
+    }
+  }
+  

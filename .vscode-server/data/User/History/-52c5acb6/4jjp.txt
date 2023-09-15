@@ -1,0 +1,16 @@
+rs.initiate({
+  _id: "configReplSet",
+  configsvr: true,
+  members: [
+    { _id: 0, host: "mongodb-configserver-0.mongodb-configserver:27019" },
+    { _id: 1, host: "mongodb-configserver-1.mongodb-configserver:27019" },
+    { _id: 2, host: "mongodb-configserver-2.mongodb-configserver:27019" }
+  ]
+});
+
+
+
+
+sh.addShard("shard1ReplSet/mongodb-shard1-0.mongodb-shard0:27018,mongodb-shard1-1.mongodb-shard0:27018,mongodb-shard1-2.mongodb-shard1:27018");
+sh.addShard("shard2ReplSet/mongodb-shard2-0.mongodb-shard0:27018,mongodb-shard2-1.mongodb-shard0:27018,mongodb-shard2-2.mongodb-shard2:27018");
+sh.addShard("shard3ReplSet/mongodb-shard3-0.mongodb-shard0:27018,mongodb-shard3-1.mongodb-shard0:27018,mongodb-shard3-2.mongodb-shard3:27018");

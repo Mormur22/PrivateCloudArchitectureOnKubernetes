@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-shuffle
+  namespace: test-ns
+spec:
+  replicas: 2  # Ajusta según la alta disponibilidad que requieras
+  selector:
+    matchLabels:
+      app: spark-shuffle
+  template:
+    metadata:
+      labels:
+        app: spark-shuffle
+    spec:
+      containers:
+      - name: spark-shuffle
+        image: gcr.io/spark-operator/spark:3.1.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 7337
+        volumeMounts:
+        - name: shuffle-data
+          mountPath: /opt/spark/work-dir
+      volumes:
+      - name: shuffle-data
+        persistentVolumeClaim:
+          claimName: spark-shuffle-pvc

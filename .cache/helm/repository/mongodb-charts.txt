@@ -1,0 +1,9 @@
+mongodb-atlas-operator
+mongodb-atlas-operator-crds
+sample-app
+atlas-cluster
+community-operator
+community-operator-crds
+enterprise-database
+enterprise-operator
+atlas-deployment

@@ -1,0 +1,6 @@
+resources:
+    - prometheus-pvc-rook.yaml
+    - prometheus-cluster-role.yaml
+    - prometheus-config.yaml
+    - prometheus-deployment.yaml
+    - prometheus-service.yaml

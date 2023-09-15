@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-shard1
+  labels:
+    role: mongodb-shard1
+spec:
+  ports:
+  - port: 27018
+  clusterIP: None
+  selector:
+    role: mongodb-shard1

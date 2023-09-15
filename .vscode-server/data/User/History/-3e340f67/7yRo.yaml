@@ -1,0 +1,65 @@
+apiVersion: "sparkoperator.k8s.io/v1beta2"
+kind: ScheduledSparkApplication
+metadata:
+  name: spark-pi-scheduled
+  namespace: spark-jobs
+spec:
+  schedule: "@every 5m"
+  concurrencyPolicy: Allow
+  template:
+    type: Python
+    mode: cluster
+    image: "gcr.io/spark-operator/spark:v3.0.0-gcs-prometheus"
+    imagePullPolicy: Always
+    mainClass: org.apache.spark.examples.SparkPi
+    mainApplicationFile: "local:///opt/spark/examples/jars/spark-examples_2.12-3.0.0.jar"
+    sparkVersion: "3.0.0"
+    restartPolicy:
+      type: Never
+    sparkConf:
+      "spark.eventLog.enabled": "true"
+      "spark.eventLog.dir": "/mnt/events"
+    volumes:
+      - name: spark-eventlog-volume
+        persistentVolumeClaim:
+          claimName: spark-eventlogs-pvc  # Actualizado al PVC correcto
+    driver:
+      cores: 1
+      coreLimit: "1200m"
+      memory: "512m"
+      labels:
+        version: 3.0.0
+        app: spark-pi-scheduled
+      serviceAccount: spark
+      volumeMounts:
+        - name: spark-eventlog-volume
+          mountPath: "/mnt/events"
+      securityContext:
+        runAsUser: 0
+    executor:
+      cores: 1
+      instances: 1
+      memory: "512m"
+      labels:
+        version: 3.0.0
+        app: spark-pi-scheduled
+      volumeMounts:
+        - name: spark-eventlog-volume
+          mountPath: "/mnt/events"
+      securityContext:
+        runAsUser: 0
+    dynamicAllocation:
+      enabled: true
+      initialExecutors: 2
+      minExecutors: 2
+      maxExecutors: 10
+    deps:
+      jars:
+        - https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.20.0/jmx_prometheus_javaagent-0.20.0.jar
+        - https://repo1.maven.org/maven2/org/mongodb/spark/mongo-spark-connector_2.13/10.2.0/mongo-spark-connector_2.13-10.2.0-all.jar
+    monitoring:
+      exposeDriverMetrics: true
+      exposeExecutorMetrics: true
+      prometheus:
+        jmxExporterJar: "/prometheus/jmx_prometheus_javaagent-0.11.0.jar"
+        port: 8090

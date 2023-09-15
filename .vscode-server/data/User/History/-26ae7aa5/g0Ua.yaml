@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb-configserver
+  namespace: mongo-sharded
+spec:
+  serviceName: "mongodb-configserver"
+  replicas: 3
+  selector:
+    matchLabels:
+      role: mongodb-configserver
+  template:
+    metadata:
+      labels:
+        role: mongodb-configserver
+    spec:
+      containers:
+      - name: mongodb-configserver
+        image: mongo:4.4
+        env:
+      - name: MONGO_INITDB_ROOT_USERNAME
+        valueFrom:
+          secretKeyRef:
+            name: mongo-credentials
+            key: MONGO_INITDB_ROOT_USERNAME
+      - name: MONGO_INITDB_ROOT_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: mongo-credentials
+            key: MONGO_INITDB_ROOT_PASSWORD
+        command:
+          - mongod
+          - "--configsvr"
+          - "--replSet"
+          - configReplSet
+          - "--bind_ip"
+          - "0.0.0.0"
+        ports:
+        - containerPort: 27019
+        volumeMounts:
+          - name: mongodb-configserver-data
+            mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-configserver-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "rook-ceph-block"
+      resources:
+        requests:
+          storage: 10Gi

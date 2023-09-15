@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-exporter-deployment
+  labels:
+    app: mongodb-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb-exporter
+  template:
+    metadata:
+      labels:
+        app: mongodb-exporter
+    spec:
+      containers:
+      - name: mongodb-exporter
+        image: docker.io/percona/mongodb_exporter:0.39
+        ports:
+        - containerPort: 9216
+        args:
+        - "--mongodb.uri=mongodb://147.96.81.119:30159"
+        - "--discovering-mode"
+        - "--mongodb.direct-connect"
+        - "--compatible-mode"
+        - "--enable.dbstats"
+        - "--collect-all"
+        - "--mongodb.collstats-colls=mydb.testcollection"

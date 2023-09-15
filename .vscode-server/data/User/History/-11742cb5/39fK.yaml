@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongodb-shard3
+  namespace: mongo-sharded
+spec:
+  serviceName: "mongodb-shard3"
+  replicas: 3
+  selector:
+    matchLabels:
+      role: mongodb-shard3
+  template:
+    metadata:
+      labels:
+        role: mongodb-shard3
+    spec:
+      containers:
+      - name: mongodb-shard3
+        image: mongo:4.4
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-credentials
+              key: MONGO_INITDB_ROOT_USERNAME
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-credentials
+              key: MONGO_INITDB_ROOT_PASSWORD
+        command:
+          - mongod
+          - "--shardsvr"
+          - "--replSet"
+          - shard3ReplSet
+          - "--bind_ip"
+          - "0.0.0.0"
+        ports:
+        - containerPort: 27018
+        volumeMounts:
+          - name: mongodb-shard3-data
+            mountPath: /data/db
+  volumeClaimTemplates:
+  - metadata:
+      name: mongodb-shard3-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "rook-ceph-block"
+      resources:
+        requests:
+          storage: 10Gi

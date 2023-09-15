@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-mongos
+  namespace: mongo-sharded
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      role: mongodb-mongos
+  template:
+    metadata:
+      labels:
+        role: mongodb-mongos
+    spec:
+      containers:
+      - name: mongodb-mongos
+        image: mongo:4.4
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-credentials
+              key: MONGO_INITDB_ROOT_USERNAME
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-credentials
+              key: MONGO_INITDB_ROOT_PASSWORD
+        command:
+          - mongos
+          - "--configdb"
+          - configReplSet/mongodb-configserver-0.mongodb-configserver:27019,mongodb-configserver-1.mongodb-configserver:27019,mongodb-configserver-2.mongodb-configserver:27019
+          - "--bind_ip"
+          - "0.0.0.0"
+        ports:
+        - containerPort: 27017

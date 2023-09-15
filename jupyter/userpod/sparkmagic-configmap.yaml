@@ -1,0 +1,8 @@
+singleuser:
+  extraVolumes:
+    - name: sparkmagic-config-volume
+      configMap:
+        name: sparkmagic-config
+  extraVolumeMounts:
+    - name: sparkmagic-config-volume
+      mountPath: /home/jovyan/.sparkmagic/

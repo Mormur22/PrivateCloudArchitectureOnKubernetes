@@ -1,0 +1,15 @@
+2023-09-05 07:53:21.850 [info] 
+
+
+
+
+2023-09-05 07:53:21.883 [info] Extension host agent started.
+2023-09-05 07:53:22.049 [info] [127.0.0.1][f7aa010b][ManagementConnection] New connection established.
+2023-09-05 07:53:22.193 [info] [127.0.0.1][ee02c58a][ExtensionHostConnection] New connection established.
+2023-09-05 07:53:22.432 [info] [127.0.0.1][ee02c58a][ExtensionHostConnection] <3955434> Launched Extension Host Process.
+2023-09-05 07:54:25.405 [error] [File Watcher (parcel)] Unexpected error: inotify_add_watch on '/home/estudiante/.vscode-server/data/logs/20230826T123423' failed: No such file or directory (EUNKNOWN) (path: /home/estudiante)
+2023-09-05 07:54:25.408 [error] [File Watcher (universal)] restarting watcher after error: inotify_add_watch on '/home/estudiante/.vscode-server/data/logs/20230826T123423' failed: No such file or directory
+2023-09-05 07:58:21.884 [info] New EH opened, aborting shutdown
+2023-09-05 18:37:11.372 [info] [127.0.0.1][ee02c58a][ExtensionHostConnection] <3955434> Extension Host Process exited with code: 0, signal: null.
+2023-09-05 18:37:11.373 [info] Last EH closed, waiting before shutting down
+2023-09-05 18:42:11.374 [info] Last EH closed, shutting down

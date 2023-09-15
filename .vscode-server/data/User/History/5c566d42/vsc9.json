@@ -1,0 +1,31 @@
+{
+    "tabnine.experimentalAutoImports": true,
+    "git.confirmSync": false,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "githubPullRequests.createOnPublishBranch": "never",
+    "oracledevtools.bookmarkFileFolder": "C:\\Users\\Alex\\Oracle\\oracle.oracledevtools",
+    "oracledevtools.download.otherFolder": "C:\\Users\\Alex\\downloads",
+    "oracledevtools.connectionConfiguration.configFilesFolder": "C:\\Users\\Alex\\Oracle\\network\\admin",
+    "oracledevtools.connectionConfiguration.walletFileFolder": "C:\\Users\\Alex\\Oracle\\network\\admin",
+    "workbench.editorAssociations": {
+        "*.bson": "default",
+        "*.docx": "default"
+    },
+    "testExplorer.addToEditorContextMenu": true,
+    "files.autoSave": "afterDelay",
+    "workbench.activityBar.visible": false,
+    "explorer.confirmDelete": false,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "git.enableSmartCommit": true,
+    "editor.unicodeHighlight.nonBasicASCII": false,
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "remote.SSH.remotePlatform": {
+        "147.96.81.119": "linux"
+    },
+    "workbench.startupEditor": "none",
+    "window.zoomLevel": 1
+}

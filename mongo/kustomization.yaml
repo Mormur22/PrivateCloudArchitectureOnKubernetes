@@ -1,0 +1,13 @@
+resources:
+- configserver-statefulset.yaml
+- configserver-service.yaml
+- mongos.deployment.yaml
+- mongos.service.yaml
+- shard0-statefulset.yaml
+- shard0-service.yaml
+- shard1-statefulset.yaml
+- shard1-service.yaml
+- shard2-statefulset.yaml
+- shard2-service.yaml
+- shard3-statefulset.yaml
+- shard3-service.yaml

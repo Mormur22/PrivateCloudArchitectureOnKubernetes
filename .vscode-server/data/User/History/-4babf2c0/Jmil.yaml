@@ -1,0 +1,15 @@
+proxy:
+  secretToken: "c6d26111ba8fa7be258ae8f662094f0f2b838a2657d04ee6e9b0195a1fb5014d"
+
+singleuser:
+  storage:
+    type: "static"
+    static:
+      pvcName: "jupyterhub-pvc"
+      subPath: 'jupyter-{username}-{servername}'
+                                                                                                                                                                                                                                    
+hub:
+  db:
+    pvc:
+      storageClassName: rook-ceph-block # Reemplaza con el nombre de tu StorageClass de Rook-Ceph si es diferente
+                                                                                                                                                                                                                                 

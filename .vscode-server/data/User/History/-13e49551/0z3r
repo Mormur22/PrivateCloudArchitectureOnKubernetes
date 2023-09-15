@@ -1,0 +1,21 @@
+# Usar la imagen base de Jupyter Notebook
+FROM jupyter/base-notebook:latest
+
+# Definir variables de entorno para las versiones (adáptalas según tus necesidades)
+ENV PYSPARK_VERSION=3.1.2
+ENV MONGO_SPARK_VERSION=10.2.0
+ENV MONGO_PY_VERSION=3.12.0
+
+# Instalar PySpark
+RUN pip install pyspark==${PYSPARK_VERSION}
+
+# Instalar la biblioteca pymongo para interactuar con MongoDB desde Python
+RUN pip install pymongo==${MONGO_PY_VERSION}
+
+# Descargar e instalar el conector mongo-spark-connector específico
+ADD https://repo1.maven.org/maven2/org/mongodb/spark/mongo-spark-connector_2.13/${MONGO_SPARK_VERSION}/mongo-spark-connector_2.13-${MONGO_SPARK_VERSION}-all.jar /usr/local/spark/jars/
+
+# Configurar el conector para que sea detectado por PySpark al iniciarse
+ENV PYSPARK_SUBMIT_ARGS="--jars /usr/local/spark/jars/mongo-spark-connector_2.13-${MONGO_SPARK_VERSION}-all.jar pyspark-shell"
+
+# Otras configuraciones y dependencias que quieras agregar

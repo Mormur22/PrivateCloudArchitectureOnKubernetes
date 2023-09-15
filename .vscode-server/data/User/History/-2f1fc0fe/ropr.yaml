@@ -1,0 +1,20 @@
+# values.yaml
+image:
+  repository: sasnouskikh/livy
+  tag: 0.8.0-incubating-spark_3.0.1_2.12-hadoop_3.2.0_cloud
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+env:
+  # Configuraciones específicas de Livy
+  LIVY_LIVY_SPARK_MASTER: "k8s://https://master:6443"
+  LIVY_SPARK_KUBERNETES_CONTAINER_IMAGE: ""
+
+sparkServiceAccount:
+  name: spark
+
+# Si tienes más configuraciones o quieres personalizar otras partes del despliegue, 
+# simplemente agrega o modifica las claves correspondientes en este archivo.
